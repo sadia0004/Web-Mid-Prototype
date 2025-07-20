@@ -344,9 +344,9 @@ class PropertiesPage {
                                     </div>
                                 </div>
                                 <div class="flex space-x-2">
-                                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-sm">
+                                    <a href="property-details.html?id=${property.id}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-sm text-center block">
                                         View Details
-                                    </button>
+                                    </a>
                                     ${isAvailable ? 
                                         '<button class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors text-sm">Rent Now</button>' :
                                         '<button class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed text-sm" disabled>Not Available</button>'
@@ -434,9 +434,9 @@ class PropertiesPage {
                         </div>
                         
                         <div class="space-y-2">
-                            <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors text-sm font-medium">
+                            <a href="property-details.html?id=${property.id}" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors text-sm font-medium text-center block">
                                 View Details
-                            </button>
+                            </a>
                             ${isAvailable ? 
                                 '<button class="w-full bg-accent text-white py-2 rounded-lg hover:bg-yellow-600 transition-colors text-sm font-medium">Rent Now</button>' :
                                 '<button class="w-full bg-gray-300 text-gray-500 py-2 rounded-lg cursor-not-allowed text-sm font-medium" disabled>Not Available</button>'

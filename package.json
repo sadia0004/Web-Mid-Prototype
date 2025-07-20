@@ -1,0 +1,43 @@
+{
+  "name": "rentify",
+  "version": "1.0.0",
+  "description": "A modern property rental management system",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "python -m http.server 8000 --directory src",
+    "serve": "npx serve src",
+    "build": "echo 'No build process required for this static site'",
+    "lint": "echo 'Add linting tools as needed'",
+    "test": "echo 'Add testing framework as needed'"
+  },
+  "keywords": [
+    "rental",
+    "property",
+    "real-estate",
+    "landlord",
+    "tenant",
+    "management",
+    "html",
+    "css",
+    "javascript",
+    "tailwind"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.3.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/rentify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/rentify/issues"
+  },
+  "homepage": "https://username.github.io/rentify"
+}
