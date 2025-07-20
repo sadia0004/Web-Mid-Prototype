@@ -1,0 +1,788 @@
+{
+  "landlords": [
+    {
+      "id": 1,
+      "name": "Md. Rahman Ahmed",
+      "phone": "+880 1712-345678",
+      "email": "rahman.ahmed@gmail.com",
+      "address": "House 45, Road 12, Dhanmondi, Dhaka-1205",
+      "nid": "1234567890123",
+      "totalProperties": 3,
+      "joinDate": "2020-01-15",
+      "rating": 4.8,
+      "isVerified": true,
+      "properties": [
+        {
+          "id": 101,
+          "title": "Modern 3 Bedroom Apartment in Dhanmondi",
+          "type": "Apartment",
+          "size": {
+            "area": 1200,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 3,
+            "bathrooms": 2,
+            "livingRoom": 1,
+            "kitchen": 1,
+            "diningRoom": 1,
+            "balcony": 2
+          },
+          "rent": {
+            "amount": 25000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 75000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Dhanmondi",
+            "subArea": "Dhanmondi 27",
+            "city": "Dhaka",
+            "district": "Dhaka",
+            "division": "Dhaka",
+            "zipCode": "1205",
+            "coordinates": {
+              "lat": 23.7461,
+              "lng": 90.3742
+            },
+            "nearbyPlaces": [
+              "Dhanmondi Lake - 2 min walk",
+              "Rabindra Sarobar Metro - 5 min walk",
+              "New Market - 10 min drive",
+              "Dhaka University - 15 min drive"
+            ]
+          },
+          "amenities": [
+            "Generator Backup",
+            "Lift",
+            "Car Parking",
+            "Gas Connection",
+            "24/7 Security",
+            "CCTV",
+            "Rooftop Garden",
+            "Playground"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Connected",
+            "water": "24/7 Supply",
+            "internet": "Ready",
+            "cableTv": "Ready"
+          },
+          "tenant": {
+            "isOccupied": true,
+            "tenantName": "Mr. Karim Hassan",
+            "tenantPhone": "+880 1712-987654",
+            "occupancyDate": "2023-06-01",
+            "leaseEndDate": "2024-05-31",
+            "familyMembers": 4
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Beautiful modern apartment with lake view. Fully furnished with all modern amenities.",
+          "availableFrom": "2024-06-01",
+          "postedDate": "2024-01-15",
+          "furnished": "Fully Furnished",
+          "floor": 5,
+          "totalFloors": 8,
+          "facing": "South",
+          "condition": "Excellent"
+        },
+        {
+          "id": 102,
+          "title": "Cozy 2 Bedroom Family Apartment",
+          "type": "Apartment",
+          "size": {
+            "area": 900,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 2,
+            "bathrooms": 2,
+            "livingRoom": 1,
+            "kitchen": 1,
+            "balcony": 1
+          },
+          "rent": {
+            "amount": 18000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 54000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Dhanmondi",
+            "subArea": "Dhanmondi 32",
+            "city": "Dhaka",
+            "district": "Dhaka",
+            "division": "Dhaka",
+            "zipCode": "1209",
+            "coordinates": {
+              "lat": 23.7515,
+              "lng": 90.3778
+            },
+            "nearbyPlaces": [
+              "Dhanmondi 32 Market - 2 min walk",
+              "Satmasjid Road - 5 min walk",
+              "Science Lab Metro - 8 min walk"
+            ]
+          },
+          "amenities": [
+            "Generator Backup",
+            "Lift",
+            "Gas Connection",
+            "Security Guard",
+            "Rooftop Access"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Connected",
+            "water": "Regular Supply",
+            "internet": "Ready",
+            "cableTv": "Ready"
+          },
+          "tenant": {
+            "isOccupied": false,
+            "tenantName": null,
+            "tenantPhone": null,
+            "occupancyDate": null,
+            "leaseEndDate": null,
+            "familyMembers": null
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Perfect for small families. Clean and well-maintained with good ventilation.",
+          "availableFrom": "2024-02-01",
+          "postedDate": "2024-01-20",
+          "furnished": "Semi Furnished",
+          "floor": 3,
+          "totalFloors": 6,
+          "facing": "East",
+          "condition": "Good"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Mrs. Fatima Khatun",
+      "phone": "+880 1812-345678",
+      "email": "fatima.khatun@yahoo.com",
+      "address": "House 78, Block B, Bashundhara R/A, Dhaka-1229",
+      "nid": "9876543210987",
+      "totalProperties": 2,
+      "joinDate": "2019-05-20",
+      "rating": 4.6,
+      "isVerified": true,
+      "properties": [
+        {
+          "id": 201,
+          "title": "Luxury 4 Bedroom Duplex in Bashundhara",
+          "type": "Duplex",
+          "size": {
+            "area": 2200,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 4,
+            "bathrooms": 3,
+            "livingRoom": 2,
+            "kitchen": 1,
+            "diningRoom": 1,
+            "balcony": 3,
+            "study": 1,
+            "servantRoom": 1
+          },
+          "rent": {
+            "amount": 45000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 135000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Bashundhara Residential Area",
+            "subArea": "Block B",
+            "city": "Dhaka",
+            "district": "Dhaka",
+            "division": "Dhaka",
+            "zipCode": "1229",
+            "coordinates": {
+              "lat": 23.8103,
+              "lng": 90.4125
+            },
+            "nearbyPlaces": [
+              "Bashundhara City Mall - 10 min drive",
+              "Bashundhara Convention Center - 5 min drive",
+              "American International School - 8 min drive",
+              "Apollo Hospital - 12 min drive"
+            ]
+          },
+          "amenities": [
+            "24/7 Generator",
+            "High Speed Lift",
+            "2 Car Parking",
+            "Central Gas",
+            "24/7 Security",
+            "CCTV Surveillance",
+            "Swimming Pool",
+            "Gym",
+            "Children's Play Area",
+            "Community Hall",
+            "Mosque",
+            "Mini Market"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Central Gas",
+            "water": "24/7 Supply with Pump",
+            "internet": "Fiber Ready",
+            "cableTv": "Cable Ready"
+          },
+          "tenant": {
+            "isOccupied": true,
+            "tenantName": "Dr. Shahid Rahman",
+            "tenantPhone": "+880 1712-555666",
+            "occupancyDate": "2023-01-01",
+            "leaseEndDate": "2024-12-31",
+            "familyMembers": 6
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1505843513577-22bb7d21e455?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Premium duplex apartment with luxury amenities and modern facilities. Perfect for executive families.",
+          "availableFrom": "2025-01-01",
+          "postedDate": "2022-12-01",
+          "furnished": "Fully Furnished",
+          "floor": "6-7",
+          "totalFloors": 12,
+          "facing": "South-West",
+          "condition": "Excellent"
+        },
+        {
+          "id": 202,
+          "title": "Modern 3 Bedroom Apartment with Garden View",
+          "type": "Apartment",
+          "size": {
+            "area": 1400,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 3,
+            "bathrooms": 3,
+            "livingRoom": 1,
+            "kitchen": 1,
+            "diningRoom": 1,
+            "balcony": 2,
+            "study": 1
+          },
+          "rent": {
+            "amount": 32000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 96000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Bashundhara Residential Area",
+            "subArea": "Block C",
+            "city": "Dhaka",
+            "district": "Dhaka",
+            "division": "Dhaka",
+            "zipCode": "1229",
+            "coordinates": {
+              "lat": 23.8090,
+              "lng": 90.4140
+            },
+            "nearbyPlaces": [
+              "Central Park - 3 min walk",
+              "Bashundhara City Mall - 8 min drive",
+              "Jamuna Future Park - 15 min drive"
+            ]
+          },
+          "amenities": [
+            "Generator Backup",
+            "Lift",
+            "Car Parking",
+            "Gas Connection",
+            "Security",
+            "Garden View",
+            "Playground"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Connected",
+            "water": "24/7 Supply",
+            "internet": "Ready",
+            "cableTv": "Ready"
+          },
+          "tenant": {
+            "isOccupied": false,
+            "tenantName": null,
+            "tenantPhone": null,
+            "occupancyDate": null,
+            "leaseEndDate": null,
+            "familyMembers": null
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Spacious apartment overlooking beautiful garden area. Family-friendly environment.",
+          "availableFrom": "2024-03-01",
+          "postedDate": "2024-02-01",
+          "furnished": "Semi Furnished",
+          "floor": 4,
+          "totalFloors": 8,
+          "facing": "North",
+          "condition": "Excellent"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Md. Aminul Islam",
+      "phone": "+880 1612-789012",
+      "email": "aminul.islam@hotmail.com",
+      "address": "House 123, Road 8, Uttara Sector 4, Dhaka-1230",
+      "nid": "5678901234567",
+      "totalProperties": 4,
+      "joinDate": "2018-09-10",
+      "rating": 4.7,
+      "isVerified": true,
+      "properties": [
+        {
+          "id": 301,
+          "title": "Spacious Family House with Garage",
+          "type": "House",
+          "size": {
+            "area": 1800,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 4,
+            "bathrooms": 3,
+            "livingRoom": 1,
+            "kitchen": 1,
+            "diningRoom": 1,
+            "garage": 1,
+            "storeRoom": 1,
+            "servantRoom": 1
+          },
+          "rent": {
+            "amount": 35000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 105000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Uttara",
+            "subArea": "Sector 4",
+            "city": "Dhaka",
+            "district": "Dhaka",
+            "division": "Dhaka",
+            "zipCode": "1230",
+            "coordinates": {
+              "lat": 23.8759,
+              "lng": 90.3795
+            },
+            "nearbyPlaces": [
+              "Uttara Central Park - 5 min walk",
+              "Hazrat Shahjalal International Airport - 10 min drive",
+              "Uttara University - 8 min drive",
+              "House Building Market - 12 min drive"
+            ]
+          },
+          "amenities": [
+            "Generator",
+            "Garage Parking",
+            "Garden",
+            "Gas Connection",
+            "24/7 Security",
+            "CCTV",
+            "Boundary Wall",
+            "Tube Well"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Connected",
+            "water": "Tube Well + WASA",
+            "internet": "Ready",
+            "cableTv": "Ready"
+          },
+          "tenant": {
+            "isOccupied": true,
+            "tenantName": "Engineer Rashid Ahmed",
+            "tenantPhone": "+880 1712-444555",
+            "occupancyDate": "2023-04-01",
+            "leaseEndDate": "2025-03-31",
+            "familyMembers": 5
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Independent house with private garden and garage. Perfect for large families.",
+          "availableFrom": "2025-04-01",
+          "postedDate": "2023-02-15",
+          "furnished": "Unfurnished",
+          "floor": "Ground + 1st",
+          "totalFloors": 2,
+          "facing": "East",
+          "condition": "Good"
+        },
+        {
+          "id": 302,
+          "title": "Modern Studio Apartment for Professionals",
+          "type": "Studio",
+          "size": {
+            "area": 450,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 0,
+            "bathrooms": 1,
+            "kitchenette": 1,
+            "livingArea": 1,
+            "balcony": 1
+          },
+          "rent": {
+            "amount": 12000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 36000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Uttara",
+            "subArea": "Sector 7",
+            "city": "Dhaka",
+            "district": "Dhaka",
+            "division": "Dhaka",
+            "zipCode": "1230",
+            "coordinates": {
+              "lat": 23.8698,
+              "lng": 90.3831
+            },
+            "nearbyPlaces": [
+              "Uttara Metro Station - 3 min walk",
+              "Regent Hospital - 5 min walk",
+              "Uttara Town Hall Market - 7 min walk"
+            ]
+          },
+          "amenities": [
+            "Generator Backup",
+            "Lift",
+            "Security",
+            "Furnished",
+            "AC",
+            "WiFi Ready"
+          ],
+          "utilities": {
+            "electricity": "Included",
+            "gas": "Connected",
+            "water": "24/7 Supply",
+            "internet": "Included",
+            "cableTv": "Included"
+          },
+          "tenant": {
+            "isOccupied": true,
+            "tenantName": "Ms. Taslima Akter",
+            "tenantPhone": "+880 1812-333444",
+            "occupancyDate": "2023-08-01",
+            "leaseEndDate": "2024-07-31",
+            "familyMembers": 1
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Compact and modern studio perfect for working professionals. All utilities included.",
+          "availableFrom": "2024-08-01",
+          "postedDate": "2023-07-01",
+          "furnished": "Fully Furnished",
+          "floor": 3,
+          "totalFloors": 6,
+          "facing": "West",
+          "condition": "Excellent"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Mr. Golam Mostafa",
+      "phone": "+880 1912-456789",
+      "email": "golam.mostafa@gmail.com",
+      "address": "House 67, CDA Avenue, Chittagong-4000",
+      "nid": "2345678901234",
+      "totalProperties": 3,
+      "joinDate": "2021-03-12",
+      "rating": 4.5,
+      "isVerified": true,
+      "properties": [
+        {
+          "id": 401,
+          "title": "Sea View Apartment in Chittagong",
+          "type": "Apartment",
+          "size": {
+            "area": 1100,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 3,
+            "bathrooms": 2,
+            "livingRoom": 1,
+            "kitchen": 1,
+            "diningRoom": 1,
+            "balcony": 2
+          },
+          "rent": {
+            "amount": 22000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 66000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "CDA Avenue",
+            "subArea": "Nasirabad",
+            "city": "Chittagong",
+            "district": "Chittagong",
+            "division": "Chittagong",
+            "zipCode": "4000",
+            "coordinates": {
+              "lat": 22.3569,
+              "lng": 91.7832
+            },
+            "nearbyPlaces": [
+              "Chittagong Medical College - 5 min drive",
+              "New Market - 10 min drive",
+              "Karnaphuli River - 8 min drive",
+              "Port City International University - 12 min drive"
+            ]
+          },
+          "amenities": [
+            "Generator Backup",
+            "Lift",
+            "Parking",
+            "Gas Connection",
+            "Security",
+            "Sea View",
+            "Roof Garden"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Connected",
+            "water": "Regular Supply",
+            "internet": "Ready",
+            "cableTv": "Ready"
+          },
+          "tenant": {
+            "isOccupied": false,
+            "tenantName": null,
+            "tenantPhone": null,
+            "occupancyDate": null,
+            "leaseEndDate": null,
+            "familyMembers": null
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Beautiful apartment with partial sea view. Great location in the heart of Chittagong.",
+          "availableFrom": "2024-02-15",
+          "postedDate": "2024-01-10",
+          "furnished": "Semi Furnished",
+          "floor": 7,
+          "totalFloors": 10,
+          "facing": "South",
+          "condition": "Good"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Mrs. Rashida Begum",
+      "phone": "+880 1712-654321",
+      "email": "rashida.begum@outlook.com",
+      "address": "House 89, Zindabazar, Sylhet-3100",
+      "nid": "6789012345678",
+      "totalProperties": 2,
+      "joinDate": "2020-11-08",
+      "rating": 4.9,
+      "isVerified": true,
+      "properties": [
+        {
+          "id": 501,
+          "title": "Traditional Family House in Sylhet",
+          "type": "House",
+          "size": {
+            "area": 1600,
+            "unit": "sqft"
+          },
+          "rooms": {
+            "bedrooms": 3,
+            "bathrooms": 2,
+            "livingRoom": 1,
+            "kitchen": 1,
+            "diningRoom": 1,
+            "courtyard": 1,
+            "storeRoom": 1
+          },
+          "rent": {
+            "amount": 20000,
+            "currency": "BDT",
+            "period": "monthly",
+            "deposit": 60000,
+            "advanceMonths": 2
+          },
+          "location": {
+            "area": "Zindabazar",
+            "subArea": "Point Road",
+            "city": "Sylhet",
+            "district": "Sylhet",
+            "division": "Sylhet",
+            "zipCode": "3100",
+            "coordinates": {
+              "lat": 24.8949,
+              "lng": 91.8687
+            },
+            "nearbyPlaces": [
+              "Sylhet Shahjalal University - 15 min drive",
+              "Sylhet Central Market - 5 min walk",
+              "Keane Bridge - 10 min walk",
+              "MAG Osmani Medical College - 8 min drive"
+            ]
+          },
+          "amenities": [
+            "Generator",
+            "Garden",
+            "Tube Well",
+            "Gas Connection",
+            "Security Guard",
+            "Boundary Wall",
+            "Fruit Trees"
+          ],
+          "utilities": {
+            "electricity": "Separate Meter",
+            "gas": "Connected",
+            "water": "Tube Well",
+            "internet": "Ready",
+            "cableTv": "Ready"
+          },
+          "tenant": {
+            "isOccupied": true,
+            "tenantName": "Professor Mahmud Hassan",
+            "tenantPhone": "+880 1812-777888",
+            "occupancyDate": "2023-07-01",
+            "leaseEndDate": "2024-06-30",
+            "familyMembers": 4
+          },
+          "images": [
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          ],
+          "description": "Traditional style house with modern facilities. Peaceful environment with garden.",
+          "availableFrom": "2024-07-01",
+          "postedDate": "2023-05-15",
+          "furnished": "Unfurnished",
+          "floor": "Ground",
+          "totalFloors": 1,
+          "facing": "North",
+          "condition": "Good"
+        }
+      ]
+    }
+  ],
+  "propertyTypes": [
+    "Apartment",
+    "House",
+    "Duplex",
+    "Studio",
+    "Villa",
+    "Penthouse",
+    "Townhouse"
+  ],
+  "locations": [
+    {
+      "division": "Dhaka",
+      "districts": ["Dhaka", "Gazipur", "Narayanganj", "Manikganj"],
+      "popularAreas": [
+        "Dhanmondi",
+        "Gulshan",
+        "Banani",
+        "Uttara",
+        "Bashundhara R/A",
+        "Mirpur",
+        "Mohammadpur",
+        "Old Dhaka",
+        "Wari",
+        "Ramna"
+      ]
+    },
+    {
+      "division": "Chittagong",
+      "districts": ["Chittagong", "Cox's Bazar", "Comilla"],
+      "popularAreas": [
+        "Nasirabad",
+        "CDA Avenue",
+        "Agrabad",
+        "Khulshi",
+        "Halishahar",
+        "Double Mooring"
+      ]
+    },
+    {
+      "division": "Sylhet",
+      "districts": ["Sylhet", "Moulvibazar"],
+      "popularAreas": [
+        "Zindabazar",
+        "Amberkhana",
+        "Chowhatta",
+        "Bandarbazar",
+        "Mirabazar"
+      ]
+    }
+  ],
+  "amenitiesOptions": [
+    "Generator Backup",
+    "Lift/Elevator",
+    "Car Parking",
+    "Bike Parking",
+    "Gas Connection",
+    "24/7 Security",
+    "CCTV Surveillance",
+    "Swimming Pool",
+    "Gym/Fitness Center",
+    "Children's Play Area",
+    "Rooftop Garden",
+    "Community Hall",
+    "Mosque",
+    "Prayer Room",
+    "Mini Market/Shop",
+    "Laundry Service",
+    "Cleaning Service",
+    "Maintenance Service",
+    "Intercom",
+    "Fire Safety",
+    "Boundary Wall",
+    "Garden",
+    "Balcony",
+    "Terrace Access",
+    "Study Room",
+    "Store Room",
+    "Servant Room",
+    "Guest Room"
+  ],
+  "furnishedOptions": [
+    "Fully Furnished",
+    "Semi Furnished", 
+    "Unfurnished"
+  ],
+  "propertyConditions": [
+    "Excellent",
+    "Good",
+    "Fair",
+    "Needs Renovation"
+  ]
+}
