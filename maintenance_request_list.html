@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landlord Maintenance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-new { background-color: #DBEAFE; color: #1E40AF; }
+        .status-in-progress { background-color: #FEF3C7; color: #92400E; }
+        .status-completed { background-color: #D1FAE5; color: #065F46; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Maintenance Dashboard</h1>
+             <div class="text-right">
+                <p class="text-sm text-gray-500">Your User ID (for sharing):</p>
+                <p id="user-id-display" class="text-sm font-mono bg-gray-200 px-2 py-1 rounded"></p>
+            </div>
+        </div>
+        
+        <div id="loading-indicator" class="text-center py-10">
+            <p class="text-gray-500">Loading requests...</p>
+        </div>
+
+        <div id="no-requests-message" class="hidden text-center py-10 bg-white rounded-lg shadow">
+            <h3 class="text-xl font-medium text-gray-700">No Maintenance Requests</h3>
+            <p class="text-gray-500 mt-2">When a tenant submits a request, it will appear here.</p>
+        </div>
+
+        <div id="requests-container" class="space-y-6">
+            <!-- Maintenance requests will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // --- Firebase Configuration ---
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-maintenance-app';
+        
+        // --- Initialize Firebase ---
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- DOM Elements ---
+        const requestsContainer = document.getElementById('requests-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const noRequestsMessage = document.getElementById('no-requests-message');
+        const userIdDisplay = document.getElementById('user-id-display');
+
+        // --- Authenticate User ---
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                console.log("Landlord signed in with UID:", user.uid);
+                userIdDisplay.textContent = user.uid;
+                // Add dummy data if needed, then listen for requests
+                addDummyDataIfNeeded().then(() => {
+                    listenForRequests();
+                });
+            } else {
+                // If no user, try to sign in.
+                const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (initialToken) {
+                    signInWithCustomToken(auth, initialToken).catch(err => {
+                        console.error("Custom token sign-in failed, trying anonymous.", err);
+                        signInAnonymously(auth);
+                    });
+                } else {
+                    signInAnonymously(auth);
+                }
+            }
+        });
+
+        // --- Add Dummy Data (only if collection is empty) ---
+        async function addDummyDataIfNeeded() {
+            const collectionPath = `/artifacts/${appId}/public/data/maintenance_requests`;
+            const collectionRef = collection(db, collectionPath);
+            const snapshot = await getDocs(collectionRef);
+
+            if (snapshot.empty) {
+                console.log("No requests found. Adding dummy data...");
+                const dummyRequests = [
+                    {
+                        tenantName: "Alice Johnson",
+                        unitNumber: "205B",
+                        phoneNumber: "555-0101",
+                        email: "alice.j@example.com",
+                        category: "Appliances",
+                        description: "The refrigerator is not cooling properly. All the food is getting warm.",
+                        permissionToEnter: true,
+                        photoUrl: "https://placehold.co/600x400/EFEFEF/AAAAAA?text=Faulty+Fridge",
+                        status: 'New',
+                    },
+                    {
+                        tenantName: "Bob Williams",
+                        unitNumber: "101A",
+                        phoneNumber: "555-0102",
+                        email: "bob.w@example.com",
+                        category: "Plumbing",
+                        description: "Leaky faucet in the bathroom sink. It's been dripping constantly for two days.",
+                        permissionToEnter: false,
+                        photoUrl: "",
+                        status: 'In Progress',
+                    },
+                    {
+                        tenantName: "Charlie Brown",
+                        unitNumber: "310C",
+                        phoneNumber: "555-0103",
+                        email: "charlie.b@example.com",
+                        category: "Electrical",
+                        description: "The light switch in the main bedroom is broken and won't turn on the light.",
+                        permissionToEnter: true,
+                        photoUrl: "",
+                        status: 'Completed',
+                    }
+                ];
+
+                for (const request of dummyRequests) {
+                    await addDoc(collectionRef, {
+                        ...request,
+                        createdAt: serverTimestamp()
+                    });
+                }
+            } else {
+                console.log("Requests collection is not empty. Skipping dummy data.");
+            }
+        }
+
+
+        // --- Firestore Listener ---
+        function listenForRequests() {
+            const collectionPath = `/artifacts/${appId}/public/data/maintenance_requests`;
+            const q = query(collection(db, collectionPath));
+            
+            onSnapshot(q, (snapshot) => {
+                loadingIndicator.classList.add('hidden');
+                if (snapshot.empty) {
+                    noRequestsMessage.classList.remove('hidden');
+                    requestsContainer.innerHTML = ''; // Clear any existing requests
+                } else {
+                    noRequestsMessage.classList.add('hidden');
+                    // Sort documents by creation date client-side
+                    const docs = snapshot.docs.sort((a, b) => {
+                        const timeA = a.data().createdAt?.toDate() || new Date(0);
+                        const timeB = b.data().createdAt?.toDate() || new Date(0);
+                        return timeB - timeA; // Newest first
+                    });
+                    displayRequests(docs);
+                }
+            }, (error) => {
+                console.error("Error fetching requests:", error);
+                loadingIndicator.textContent = "Error loading requests.";
+            });
+        }
+
+        // --- Display Logic ---
+        function displayRequests(docs) {
+            requestsContainer.innerHTML = ''; // Clear previous content
+            docs.forEach(doc => {
+                const request = doc.data();
+                const requestId = doc.id;
+                const card = createRequestCard(request, requestId);
+                requestsContainer.appendChild(card);
+            });
+        }
+
+        function createRequestCard(request, id) {
+            const card = document.createElement('div');
+            card.className = 'bg-white shadow-md rounded-lg p-6 transition-shadow duration-300 hover:shadow-lg';
+            card.dataset.id = id;
+
+            const createdAt = request.createdAt ? request.createdAt.toDate().toLocaleString() : 'N/A';
+            const statusColorClass = getStatusClass(request.status);
+
+            card.innerHTML = `
+                <div class="flex flex-col sm:flex-row justify-between sm:items-start border-b border-gray-200 pb-4 mb-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Unit: <span class="font-bold text-gray-800">${request.unitNumber || 'N/A'}</span></p>
+                        <p class="text-lg font-bold text-gray-900">${request.category || 'No Category'}</p>
+                        <p class="text-sm text-gray-500">Submitted by ${request.tenantName || 'N/A'} on ${createdAt}</p>
+                    </div>
+                    <div class="mt-3 sm:mt-0 flex items-center space-x-4">
+                        <span class="status-badge ${statusColorClass}">${request.status}</span>
+                    </div>
+                </div>
+
+                <p class="text-gray-700 mb-4">${request.description || 'No description provided.'}</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                    <p><strong>Contact:</strong> ${request.phoneNumber || 'N/A'} | ${request.email || 'N/A'}</p>
+                    <p><strong>Permission to Enter:</strong> <span class="font-semibold ${request.permissionToEnter ? 'text-green-600' : 'text-red-600'}">${request.permissionToEnter ? 'Yes' : 'No'}</span></p>
+                </div>
+                
+                ${request.photoUrl ? `
+                <div class="mt-4">
+                    <a href="${request.photoUrl}" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium">View Attached Photo</a>
+                </div>` : ''}
+
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-end gap-3">
+                    <select class="status-select w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md bg-white text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="New" ${request.status === 'New' ? 'selected' : ''}>New</option>
+                        <option value="In Progress" ${request.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="Completed" ${request.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                    </select>
+                    <button class="delete-btn w-full sm:w-auto bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition duration-150">Delete</button>
+                </div>
+            `;
+
+            // --- Event Listeners for Card Actions ---
+            const statusSelect = card.querySelector('.status-select');
+            statusSelect.addEventListener('change', (e) => {
+                updateRequestStatus(id, e.target.value);
+            });
+
+            const deleteBtn = card.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', () => {
+                // Replaced window.confirm with a simple confirm for this environment
+                if (confirm('Are you sure you want to delete this request? This action cannot be undone.')) {
+                    deleteRequest(id);
+                }
+            });
+
+            return card;
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'New': return 'status-new';
+                case 'In Progress': return 'status-in-progress';
+                case 'Completed': return 'status-completed';
+                default: return 'bg-gray-200 text-gray-800';
+            }
+        }
+        
+        // --- Firestore Actions ---
+        async function updateRequestStatus(id, newStatus) {
+            const docRef = doc(db, `/artifacts/${appId}/public/data/maintenance_requests`, id);
+            try {
+                await updateDoc(docRef, { status: newStatus });
+                console.log(`Request ${id} status updated to ${newStatus}`);
+            } catch (error) {
+                console.error("Error updating status: ", error);
+            }
+        }
+
+        async function deleteRequest(id) {
+            const docRef = doc(db, `/artifacts/${appId}/public/data/maintenance_requests`, id);
+            try {
+                await deleteDoc(docRef);
+                console.log(`Request ${id} deleted.`);
+            } catch (error) {
+                console.error("Error deleting request: ", error);
+            }
+        }
+    </script>
+</body>
+</html>

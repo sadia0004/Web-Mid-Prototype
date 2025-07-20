@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Maintenance Request</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="form-container">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Maintenance Request</h1>
+            <p class="text-gray-500 mt-2">Please fill out the form below to report an issue.</p>
+        </div>
+
+        <form id="maintenance-form">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="tenant-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="tenant-name" name="tenant-name" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="unit-number" class="block text-sm font-medium text-gray-700 mb-1">Apartment/Unit #</label>
+                    <input type="text" id="unit-number" name="unit-number" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="phone-number" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="tel" id="phone-number" name="phone-number" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <label for="issue-category" class="block text-sm font-medium text-gray-700 mb-1">Issue Category</label>
+                <select id="issue-category" name="issue-category" required class="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Select a category</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Appliances">Appliances</option>
+                    <option value="HVAC">HVAC (Heating & Cooling)</option>
+                    <option value="Pest Control">Pest Control</option>
+                    <option value="General">General/Other</option>
+                </select>
+            </div>
+
+            <div class="mt-6">
+                <label for="issue-description" class="block text-sm font-medium text-gray-700 mb-1">Detailed Description</label>
+                <textarea id="issue-description" name="issue-description" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+            </div>
+            
+            <div class="mt-6">
+                <label for="photo-upload" class="block text-sm font-medium text-gray-700 mb-1">Upload Photo (Optional)</label>
+                <input type="file" id="photo-upload" name="photo-upload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100">
+            </div>
+
+            <div class="mt-6">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="permission-to-enter" name="permission-to-enter" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="permission-to-enter" class="font-medium text-gray-700">Permission to Enter</label>
+                        <p class="text-gray-500">Check this box to grant maintenance staff permission to enter your unit to address the issue, even if you are not home.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    Submit Request
+                </button>
+            </div>
+        </form>
+        
+        <!-- Success Message Modal -->
+        <div id="success-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <div class="mt-3 text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">Success!</h3>
+                    <div class="mt-2 px-7 py-3">
+                        <p class="text-sm text-gray-500">Your maintenance request has been submitted. The landlord has been notified.</p>
+                    </div>
+                    <div class="items-center px-4 py-3">
+                        <button id="close-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // --- Firebase Configuration ---
+        // This configuration is provided by the environment.
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-maintenance-app';
+
+        // --- Initialize Firebase ---
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const auth = getAuth(app);
+
+        // --- Authenticate User ---
+        // We sign in anonymously as the tenant doesn't need a permanent account.
+        signInAnonymously(auth).catch((error) => {
+            console.error("Anonymous sign-in failed:", error);
+        });
+        
+        onAuthStateChanged(auth, user => {
+            if (!user) {
+                console.log("User is not signed in.");
+            }
+        });
+
+        // --- DOM Elements ---
+        const form = document.getElementById('maintenance-form');
+        const successModal = document.getElementById('success-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        // --- Form Submission Logic ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+
+            const formData = new FormData(form);
+            const photoFile = formData.get('photo-upload');
+            let photoUrl = '';
+
+            try {
+                // 1. Upload photo if it exists
+                if (photoFile && photoFile.size > 0) {
+                    const storageRef = ref(storage, `maintenance_photos/${appId}/${Date.now()}_${photoFile.name}`);
+                    const snapshot = await uploadBytes(storageRef, photoFile);
+                    photoUrl = await getDownloadURL(snapshot.ref);
+                }
+
+                // 2. Prepare data for Firestore
+                const requestData = {
+                    tenantName: formData.get('tenant-name'),
+                    unitNumber: formData.get('unit-number'),
+                    phoneNumber: formData.get('phone-number'),
+                    email: formData.get('email'),
+                    category: formData.get('issue-category'),
+                    description: formData.get('issue-description'),
+                    permissionToEnter: formData.get('permission-to-enter') === 'on',
+                    photoUrl: photoUrl,
+                    status: 'New', // Initial status
+                    createdAt: serverTimestamp()
+                };
+
+                // 3. Save data to Firestore
+                // We use a public collection so the landlord can access it.
+                const collectionPath = `/artifacts/${appId}/public/data/maintenance_requests`;
+                await addDoc(collection(db, collectionPath), requestData);
+
+                // 4. Show success and reset form
+                successModal.classList.remove('hidden');
+                form.reset();
+
+            } catch (error) {
+                console.error("Error submitting request:", error);
+                alert("There was an error submitting your request. Please try again.");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Request';
+            }
+        });
+
+        // --- Modal Close Logic ---
+        closeModalBtn.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
