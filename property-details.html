@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details - PropertyPilot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Leaflet CSS for OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Swiper CSS for image gallery -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#f59e0b',
+                        dark: '#1f2937',
+                        light: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <i class="fas fa-home text-primary text-2xl"></i>
+                        <span class="text-2xl font-bold text-dark">PropertyPilot</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="properties.html" class="text-gray-600 hover:text-primary transition-colors">Properties</a>
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">About</a>
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">Contact</a>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors">
+                        Sign In
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-600 hover:text-primary">Home</a>
+                <a href="properties.html" class="block px-3 py-2 text-gray-600 hover:text-primary">Properties</a>
+                <a href="#" class="block px-3 py-2 text-gray-600 hover:text-primary">About</a>
+                <a href="#" class="block px-3 py-2 text-gray-600 hover:text-primary">Contact</a>
+                <button class="w-full text-left px-3 py-2 bg-primary text-white rounded-lg mt-2">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Back Navigation -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <button onclick="goBack()" class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Properties
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading" class="flex justify-center items-center min-h-screen">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+
+    <!-- Property Details Content -->
+    <div id="property-content" class="hidden">
+        <!-- Hero Section with Image Gallery -->
+        <section class="relative">
+            <div class="swiper property-gallery h-96 md:h-[500px]">
+                <div class="swiper-wrapper" id="image-gallery">
+                    <!-- Images will be dynamically loaded here -->
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            
+            <!-- Overlay Info -->
+            <div class="absolute top-4 left-4 z-10">
+                <span id="availability-badge" class="px-3 py-1 rounded-full text-sm font-medium text-white"></span>
+            </div>
+            
+            <div class="absolute top-4 right-4 z-10">
+                <button id="favorite-btn" class="bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition-colors">
+                    <i class="far fa-heart text-gray-600 text-lg"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column - Property Details -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Property Header -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h1 id="property-title" class="text-3xl font-bold text-gray-900 mb-2"></h1>
+                                <p id="property-location" class="text-gray-600 flex items-center">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                </p>
+                            </div>
+                            <div class="text-right mt-4 md:mt-0">
+                                <div id="property-price" class="text-3xl font-bold text-primary"></div>
+                                <div class="text-gray-600">per month</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div id="property-rating" class="flex items-center">
+                                <!-- Rating stars will be added here -->
+                            </div>
+                            <div id="property-type-badge" class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"></div>
+                        </div>
+                        
+                        <p id="property-description" class="text-gray-700 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Property Features -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Property Features</h2>
+                        <div id="property-features" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <!-- Features will be dynamically loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Room Details -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Room Details</h2>
+                        <div id="room-details" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <!-- Room details will be dynamically loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Amenities -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Amenities</h2>
+                        <div id="amenities-list" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <!-- Amenities will be dynamically loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Utilities -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Utilities</h2>
+                        <div id="utilities-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Utilities will be dynamically loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Nearby Places -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Nearby Places</h2>
+                        <div id="nearby-places" class="space-y-3">
+                            <!-- Nearby places will be dynamically loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Location</h2>
+                        <div id="map" class="h-96 rounded-lg overflow-hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Sidebar -->
+                <div class="space-y-6">
+                    <!-- Contact Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+                        <h3 class="text-xl font-bold text-gray-900 mb-6">Contact Landlord</h3>
+                        
+                        <div id="landlord-info" class="mb-6">
+                            <!-- Landlord info will be dynamically loaded -->
+                        </div>
+
+                        <div class="space-y-4">
+                            <button id="call-btn" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-secondary transition-colors flex items-center justify-center">
+                                <i class="fas fa-phone mr-2"></i>
+                                Call Now
+                            </button>
+                            
+                            <button id="email-btn" class="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center">
+                                <i class="fas fa-envelope mr-2"></i>
+                                Send Email
+                            </button>
+                            
+                            <button id="rent-btn" class="w-full bg-accent text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center">
+                                <i class="fas fa-key mr-2"></i>
+                                Rent Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Rental Details -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Rental Details</h3>
+                        <div id="rental-details" class="space-y-3">
+                            <!-- Rental details will be dynamically loaded -->
+                        </div>
+                    </div>
+
+                    <!-- Current Tenant Info (if occupied) -->
+                    <div id="tenant-info" class="bg-white rounded-xl shadow-lg p-6 hidden">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Current Tenant</h3>
+                        <div id="tenant-details">
+                            <!-- Tenant details will be dynamically loaded -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="hidden">
+        <div class="flex flex-col items-center justify-center min-h-screen">
+            <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">Property Not Found</h2>
+            <p class="text-gray-600 mb-6">The property you're looking for doesn't exist or has been removed.</p>
+            <a href="properties.html" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-colors">
+                Back to Properties
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/property-details.js"></script>
+</body>
+</html>
