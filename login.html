@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - PropertyPilot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">Login</h2>
+    <form id="loginForm" class="space-y-4">
+      <input type="email" id="email" placeholder="Email" class="w-full p-2 border rounded" required />
+      <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded" required />
+      <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Login</button>
+      <p class="text-sm text-center mt-4">
+        Don't have an account? 
+        <a href="signup.html" class="text-indigo-600 hover:underline">Sign Up</a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+
+      if (user) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+        if (user.role === "landlord") {
+          window.location.href = "landlord_dashboard.html"; // Your landlord dashboard page
+        } else if (user.role === "tenant") {
+          window.location.href = "tenant_dashboard.html"; // Tenant dashboard if any
+        } else {
+          alert("Unknown role.");
+        }
+      } else {
+        alert("Invalid email or password.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PropertyPilot Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4ff;
+      color: #222;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      align-items: center;
+      background-color: #021934;
+      padding: 10px 20px;
+      color: white;
+      box-shadow: 0 2px 8px rgba(74, 144, 226, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .brand {
+      display: flex;
+      align-items: center;
+      margin-right: 40px;
+      font-weight: 700;
+      font-size: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .navbar .brand img {
+      height: 80px;
+      width: 100px;
+      margin-right: 10px;
+      border-radius: 60%;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+    }
+
+    .navbar .brand span {
+      margin-left: 5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      margin-right: auto;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 8px 12px;
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      background-color: #2c5dbd;
+    }
+
+    .logout-button {
+      background-color: #e74c3c;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 20px;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logout-button:hover {
+      background-color: #bf3b30;
+    }
+
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .profile-box img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #ccc;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .welcome-message {
+      font-size: 28px;
+      font-weight: bold;
+      color: #4f46e5;
+    }
+
+    /* Action buttons container with flexible wrapping */
+    .action-buttons {
+      margin: 30px auto 50px;
+      max-width: 700px;
+      padding: 0 20px;
+      display: flex;
+      gap: 15px;
+      justify-content: center; /* Center horizontally */
+    }
+
+    /* Individual action button style */
+    .action-link {
+      flex: 1 1 220px; /* Flexible width with base 220px */
+      max-width: 220px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Button colors */
+    .action-link.green { background-color: #22c55e; }
+    .action-link.green:hover { background-color: #16a34a; }
+
+    .action-link.orange { background-color: #f97316; }
+    .action-link.orange:hover { background-color: #ea580c; }
+
+    .action-link.purple { background-color: #a855f7; }
+    .action-link.purple:hover { background-color: #9333ea; }
+
+    .action-link.red { background-color: #ef4444; }
+    .action-link.red:hover { background-color: #dc2626; }
+
+    /* Cards container with responsive grid */
+    .cards-container {
+      max-width: 400px;
+      height: 300px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4 ,1fr);
+      gap: 20px;
+    }
+
+    /* Individual card styles */
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      min-width: 150px;
+    }
+
+    .card .icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #4f46e5;
+    }
+
+    .card .number {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .card .label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7f8c8d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px;
+      }
+      .navbar .brand {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      .navbar h1 {
+        display: none;
+      }
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      .navbar a {
+        margin: 5px 8px;
+        font-size: 14px;
+      }
+      .profile-box {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+        margin-left: 0;
+      }
+      .action-link {
+        flex: 1 1 90%;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand" tabindex="0">
+      <img id="brandLogo" src="/image/logo.png" alt="PropertyPilot Logo" />
+      <span>PropertyPilot</span>
+    </div>
+    <div class="nav-links">
+      <a href="profile.html" class="active">Profile</a>
+      <a href="propertyInfo.html">Add Property Info</a>
+      <a href="Schedule_create.html">Meeting Schedule</a>
+    </div>
+    <a id="logoutLink" class="logout-button">Logout</a>
+
+    <div class="profile-box">
+      <img id="profilePhoto" src="https://placehold.co/40x40/ccc/000?text=SA" alt="Profile Photo" />
+      <span id="userFullName">Sadia Ahmed</span>
+    </div>
+  </nav>
+
+  <main>
+    <section class="welcome-container" aria-live="polite" aria-atomic="true">
+      <div class="welcome-message" id="welcomeMessage">👋 Welcome</div>
+    </section>
+
+    <section class="action-buttons" aria-label="Body Navigation Links">
+      <a href="add_tenant.html" class="action-link green">+ Add Tenant </a>
+      <a href="RentAndBillForm.html" class="action-link orange">Rent and Bills</a> 
+      <a href="apartmentList.html" class="action-link purple">Apartment List</a>
+      <a href="maintenance.html" class="action-link red">Maintenance Requests</a>
+    </section>
+
+    <section class="cards-container" aria-label="Dashboard Summary Cards">
+      <div class="card" tabindex="0">
+        <div class="icon" aria-label="Total Properties">🏢</div>
+        <div class="number" id="cardTotalProperties">12</div>
+        <div class="label">Total Flats</div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <div class="icon" aria-label="Total Tenants">👥</div>
+        <div class="number" id="cardTotalTenants">38</div>
+        <div class="label">Total Tenants</div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <div class="icon" aria-label="Monthly Income">💰</div>
+        <div class="number" id="cardMonthlyIncome">$45,600</div>
+        <div class="label">Monthly Income</div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <div class="icon" aria-label="Pending Maintenance">🛠️</div>
+        <div class="number" id="cardPendingMaintenance">3</div>
+        <div class="label">Pending Maintenance</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Load logged-in user data from localStorage
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (!loggedInUser || loggedInUser.role !== 'landlord') {
+      // Not logged in or role mismatch: redirect to login page
+      window.location.href = 'login.html';
+    } else {
+      // Set profile photo with fallback
+      const profilePhotoUrl = loggedInUser.profilePhoto && loggedInUser.profilePhoto.length > 0
+        ? loggedInUser.profilePhoto
+        : 'https://placehold.co/40x40/ccc/000?text=DP';
+
+      const fullName = loggedInUser.fullName || "Landlord";
+
+      document.getElementById('profilePhoto').src = profilePhotoUrl;
+      document.getElementById('userFullName').innerText = fullName;
+
+      // Update welcome message
+      const welcomeMessageEl = document.getElementById('welcomeMessage');
+      if (welcomeMessageEl) {
+        welcomeMessageEl.innerText = `👋 Welcome, ${fullName}`;
+      }
+
+      // Set dashboard numbers or defaults
+      document.getElementById('cardTotalProperties').innerText = loggedInUser.totalProperties || 0;
+      document.getElementById('cardTotalTenants').innerText = loggedInUser.totalTenants || 0;
+      document.getElementById('cardMonthlyIncome').innerText = `$${loggedInUser.monthlyIncome || 0}`;
+      document.getElementById('cardPendingMaintenance').innerText = loggedInUser.pendingMaintenance || 0;
+    }
+
+    // Logout event handler
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('loggedInUser');
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>

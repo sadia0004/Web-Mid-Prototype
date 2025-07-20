@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tenant Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4ff;
+      color: #222;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background-color: #2980b9;
+      padding: 12px 25px;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .brand img {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+    }
+
+    .navbar h1 {
+      font-size: 22px;
+      margin-right: auto;
+    }
+
+    .navbar a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 5px;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      background-color: #1c598a;
+    }
+
+    .profile-box {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      gap: 10px;
+      padding: 10px;
+    }
+    .profile-box img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #ccc;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .welcome-message {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2980b9;
+    }
+
+    .property-name {
+      font-size: 20px;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    .important-alerts {
+      margin-top: 20px;
+      background: #ffeeba;
+      border-left: 5px solid #f0ad4e;
+      padding: 12px;
+      border-radius: 5px;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card .icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #2980b9;
+    }
+
+    .card .number {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .card .label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7f8c8d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand" tabindex="0">
+      <img id="brandLogo" src="image/logo.png" alt="PropertyPilot Logo" width="30" height="30" />
+    </div>
+    <h1>PropertyPilot</h1>
+    <a href="profile.html" class="active">Profile</a>
+    <a href="Rent_Pay.html">Rent & Bills</a>
+    <a href="notice_board.html">Notifications</a>
+    <a href="maintenance.html">Maintenance</a>
+    <a href="#" id="logoutLink" class="text-red-600 hover:underline">Logout</a>
+
+    <!-- User Profile Info -->
+    <div class="profile-box">
+      <img id="profilePhoto" src="default-avatar.png" alt="Profile Photo">
+      <span id="userFullName">Loading...</span>
+    </div>
+  </nav>
+
+  <main>
+    <section class="welcome-container">
+      <div class="welcome-message" id="welcomeMessage">👋 Welcome, User</div>
+      <div class="property-name" id="apartmentInfo">🏠 Apartment: -</div>
+      <div class="property-name" id="professionInfo">🧑‍💼 Profession: -</div>
+      <div class="property-name" id="rentDateInfo">📅 Rent Date: -</div>
+      <div class="important-alerts" id="rentAlert">🔔 Your rent is due in - days</div>
+    </section>
+
+    <section class="cards-container">
+      <div class="card">
+        <div class="icon">💰</div>
+        <div class="number" id="rentDue">৳0</div>
+        <div class="label">Rent Due</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">📄</div>
+        <div class="number" id="pendingBills">0</div>
+        <div class="label">Pending Bills</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">🔔</div>
+        <div class="number" id="unreadNotifications">0</div>
+        <div class="label">Unread Notifications</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">🛠️</div>
+        <div class="number" id="openMaintenance">0</div>
+        <div class="label">Open Maintenance</div>
+      </div>
+    </section>
+  </main>
+
+<script>
+  // Load logged-in user data from localStorage
+  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  if (!loggedInUser || loggedInUser.role !== 'tenant') {
+    // Not logged in or not tenant: redirect to login page
+    window.location.href = 'login.html';
+  } else {
+    // Set profile photo (use fallback if empty)
+    document.getElementById('profilePhoto').src = loggedInUser.profilePhoto && loggedInUser.profilePhoto.length > 0
+      ? loggedInUser.profilePhoto
+      : 'default-avatar.png';
+
+    // Set user full name
+    document.getElementById('userFullName').innerText = loggedInUser.fullName;
+
+    // Personalize welcome message
+    document.getElementById('welcomeMessage').innerText = `👋 Welcome, ${loggedInUser.fullName}`;
+
+    // Set apartment, profession, rent date, rent alert — fallback to "-" if missing
+    document.getElementById('apartmentInfo').innerText = `🏠 Apartment: ${loggedInUser.apartmentNo || '-'}`;
+    document.getElementById('professionInfo').innerText = `🧑‍💼 Profession: ${loggedInUser.profession || '-'}`;
+    document.getElementById('rentDateInfo').innerText = `📅 Rent Date: ${loggedInUser.rentDate || '-'}`;
+
+    // Calculate days until rent due if rentDate exists
+    if (loggedInUser.rentDate) {
+      const today = new Date();
+      const rentDate = new Date(loggedInUser.rentDate);
+      const diffTime = rentDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      document.getElementById('rentAlert').innerText = diffDays > 0
+        ? `🔔 Your rent is due in ${diffDays} day${diffDays > 1 ? 's' : ''}`
+        : '🔔 Your rent is due today or overdue!';
+    } else {
+      document.getElementById('rentAlert').innerText = `🔔 Rent due date not set`;
+    }
+
+    // Fill dashboard card data, fallback 0 or empty string
+    document.getElementById('rentDue').innerText = loggedInUser.rentDue ? `৳${loggedInUser.rentDue}` : '৳0';
+    document.getElementById('pendingBills').innerText = loggedInUser.pendingBills || 0;
+    document.getElementById('unreadNotifications').innerText = loggedInUser.unreadNotifications || 0;
+    document.getElementById('openMaintenance').innerText = loggedInUser.openMaintenance || 0;
+  }
+
+  // Logout logic
+  document.getElementById('logoutLink').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('loggedInUser');
+    window.location.href = 'login.html';
+  });
+</script>
+
+</body>
+</html>

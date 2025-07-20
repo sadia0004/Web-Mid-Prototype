@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tenant Notice Board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-6">
+
+  <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-8">📌 Tenant Notice Board</h2>
+
+    <div id="scheduleContainer" class="space-y-6">
+      <!-- Schedule cards will be injected here -->
+    </div>
+
+    <div id="emptyMessage" class="text-center text-gray-500 mt-10 hidden">
+      <p class="text-lg">No notices available yet.</p>
+    </div>
+  </div>
+
+  <script>
+    const tenant = JSON.parse(localStorage.getItem('loggedInUser'));
+    const allSchedules = JSON.parse(localStorage.getItem('sentSchedules')) || [];
+
+    const scheduleContainer = document.getElementById('scheduleContainer');
+    const emptyMessage = document.getElementById('emptyMessage');
+
+    if (!tenant || tenant.role !== 'tenant') {
+      alert("You are not authorized to view this page.");
+      window.location.href = 'login.html';
+    }
+
+    const tenantSchedules = allSchedules.filter(item => item.tenant.toLowerCase() === tenant.fullName.toLowerCase());
+
+    if (tenantSchedules.length === 0) {
+      emptyMessage.classList.remove('hidden');
+    } else {
+      tenantSchedules.forEach(schedule => {
+        const card = document.createElement('div');
+        card.className = 'bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow';
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between mb-2">
+            <div>
+              <h3 class="text-2xl font-semibold text-blue-800 mb-1">🗓️ ${schedule.description}</h3>
+              <p class="text-sm text-gray-500">${schedule.date} at ${schedule.time}</p>
+            </div>
+            <div class="text-sm text-white px-3 py-1 rounded-full ${schedule.meetingType === 'in-person' ? 'bg-green-600' : 'bg-indigo-600'}">
+              ${schedule.meetingType === 'in-person' ? 'In-Person' : 'Online'}
+            </div>
+          </div>
+
+          <div class="mt-3 text-gray-700 text-[15px] space-y-1">
+            ${schedule.meetingType === 'in-person'
+              ? `<p><strong>📍 Address:</strong> ${schedule.address}</p>`
+              : `<p><strong>🔗 Meeting Link:</strong> <a href="${schedule.link}" target="_blank" class="text-blue-600 underline">${schedule.link}</a></p>`}
+          </div>
+        `;
+        scheduleContainer.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
