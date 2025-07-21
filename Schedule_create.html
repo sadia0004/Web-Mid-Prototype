@@ -1,407 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Landlord Schedule Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #005A9C; /* A professional blue */
-            --secondary-color: #F7B801; /* A warm yellow for drafts */
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --background-color: #f4f7fa;
-            --card-background: #ffffff;
-            --text-color: #333;
-            --label-color: #555;
-            --border-color: #e0e0e0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 800px;
-            background-color: var(--card-background);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 25px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-        
-        .content-wrapper {
-            padding: 30px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .form-field {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .form-field.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-field label {
-            font-weight: 500;
-            color: var(--label-color);
-            font-size: 0.9rem;
-        }
-
-        .input-field, .select-field, .textarea-field {
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            width: 100%;
-            box-sizing: border-box;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-family: 'Poppins', sans-serif;
-            background-color: #fdfdfd;
-        }
-
-        .input-field:focus, .select-field:focus, .textarea-field:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.2);
-        }
-
-        .action-container {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .action-button {
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        #saveDraft {
-            background: linear-gradient(45deg, var(--secondary-color), #f9c74f);
-            box-shadow: 0 4px 15px rgba(247, 184, 1, 0.4);
-        }
-        
-        #sendToTenants {
-            background: linear-gradient(45deg, var(--success-color), #34c759);
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
-        }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-        }
-
-        .drafts-section {
-            margin-top: 40px;
-        }
-
-        .drafts-section h2 {
-            font-size: 1.5rem;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-        
-        #draftList {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: grid;
-            gap: 15px;
-        }
-
-        .draft-item {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--secondary-color);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .draft-item strong {
-            color: var(--primary-color);
-            font-size: 1.1rem;
-        }
-        
-        .draft-item .description {
-            margin: 5px 0;
-        }
-        
-        .draft-item .details {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 10px;
-        }
-        
-        .draft-item .details a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .draft-item .details a:hover {
-            text-decoration: underline;
-        }
-
-        .hidden {
-            display: none;
-        }
-        
-        #toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 16px 30px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 500;
-            color: white;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 1000;
-        }
-
-        #toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        @media (max-width: 640px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Landlord Schedule Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.5);
+    }
+    .fade-in {
+      animation: fadeIn 0.7s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
-<body>
+<body class="relative min-h-screen">
+  <video autoplay loop muted class="background-video">
+    <source src="image/vedio2.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
-    <div class="main-container">
-        <header class="header">
-            <h1>Landlord Schedule Maker</h1>
-        </header>
-        
-        <div class="content-wrapper">
-            <form id="scheduleForm" class="form-grid">
-                <div class="form-field full-width">
-                    <label for="tenantName">Tenant Name</label>
-                    <input type="text" id="tenantName" required class="input-field" placeholder="John Doe" />
-                </div>
-
-                <div class="form-field">
-                    <label for="meetingType">Meeting Type</label>
-                    <select id="meetingType" class="select-field">
-                        <option value="in-person">In-Person</option>
-                        <option value="online">Online</option>
-                    </select>
-                </div>
-
-                <div class="form-field" id="addressField">
-                    <label for="propertyAddress">Property Address</label>
-                    <input type="text" id="propertyAddress" class="input-field" placeholder="123 Main St, Dhaka" />
-                </div>
-
-                <div class="form-field hidden" id="linkField">
-                    <label for="meetingLink">Meeting Link</label>
-                    <input type="url" id="meetingLink" class="input-field" placeholder="https://meet.google.com/xyz" />
-                </div>
-                
-                <div class="form-field full-width">
-                    <label for="description">Event Description</label>
-                    <textarea id="description" class="textarea-field" rows="3" placeholder="e.g., Quarterly maintenance check"></textarea>
-                </div>
-
-                <div class="form-field">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" required class="input-field" />
-                </div>
-                <div class="form-field">
-                    <label for="time">Time</label>
-                    <input type="time" id="time" required class="input-field" />
-                </div>
-
-                <div class="action-container">
-                    <button type="button" id="saveDraft" class="action-button">
-                        <i class="fas fa-save"></i> Save as Draft
-                    </button>
-                    <button type="button" id="sendToTenants" class="action-button">
-                        <i class="fas fa-paper-plane"></i> Send to Tenants
-                    </button>
-                </div>
-            </form>
-
-            <div class="drafts-section">
-                <h2><i class="fas fa-clipboard-list"></i> Draft Schedule</h2>
-                <ul id="draftList"></ul>
-            </div>
+  <main class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto px-4 py-10 backdrop-blur-md  rounded-xl shadow-2xl">
+    <!-- Schedule Form -->
+    <div class="bg-indigo-300 shadow-lg rounded-3xl p-8 hover:shadow-blue-300  transition duration-500">
+      <h2 class="text-3xl font-bold text-center text-blue-700 mb-8 fade-in">📌 Schedule for Tenants</h2>
+      <form id="scheduleForm" class="space-y-6">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Select Tenant(s)</label>
+          <div id="checkboxContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+          <label class="inline-flex items-center mt-2">
+            <input type="checkbox" id="selectAllCheckbox" class="mr-2">
+            <span>Select All</span>
+          </label>
         </div>
+
+        <div>
+          <label for="meetingType" class="block text-gray-700 font-medium mb-1">Meeting Type</label>
+          <select id="meetingType" class="w-full border border-gray-300 p-2 rounded">
+            <option value="in-person">In-Person</option>
+            <option value="online">Online</option>
+          </select>
+        </div>
+
+        <div id="linkField" class="hidden">
+          <label for="meetingLink" class="block text-gray-700 font-medium mb-1">Meeting Link</label>
+          <input type="url" id="meetingLink" class="w-full border border-gray-300 p-2 rounded" placeholder="https://meet.example.com/" disabled />
+        </div>
+
+        <div>
+          <label for="description" class="block text-gray-700 font-medium mb-1">Event Description</label>
+          <textarea id="description" rows="3" class="w-full border border-gray-300 p-2 rounded" placeholder="e.g., Monthly meeting"></textarea>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="w-1/2">
+            <label for="date" class="block text-gray-700 font-medium mb-1">Date</label>
+            <input type="date" id="date" class="w-full border border-gray-300 p-2 rounded" />
+          </div>
+          <div class="w-1/2">
+            <label for="time" class="block text-gray-700 font-medium mb-1">Time</label>
+            <input type="time" id="time" class="w-full border border-gray-300 p-2 rounded" />
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <button type="submit" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded hover:scale-105 transform transition">Send Schedule</button>
+        </div>
+      </form>
     </div>
 
-    <div id="toast"></div>
+    <!-- Schedule History -->
+    <div class="bg-indigo-300 shadow-lg rounded-3xl p-8 hover:shadow-purple-300 transition duration-500">
+      <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">📖 Schedule Records</h2>
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">📅 Recent Schedules</h3>
+        <ul id="recentSchedules" class="space-y-3"></ul>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">📚 Older History</h3>
+        <ul id="historySchedules" class="space-y-3"></ul>
+      </div>
+    </div>
+  </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const tenantName = document.getElementById("tenantName");
-            const meetingType = document.getElementById("meetingType");
-            const propertyAddress = document.getElementById("propertyAddress");
-            const meetingLink = document.getElementById("meetingLink");
-            const addressField = document.getElementById("addressField");
-            const linkField = document.getElementById("linkField");
-            const description = document.getElementById("description");
-            const date = document.getElementById("date");
-            const time = document.getElementById("time");
-            const draftList = document.getElementById("draftList");
-            const saveDraftBtn = document.getElementById("saveDraft");
-            const sendBtn = document.getElementById("sendToTenants");
-            const form = document.getElementById("scheduleForm");
+  <script>
+    const checkboxContainer = document.getElementById("checkboxContainer");
+    const meetingType = document.getElementById("meetingType");
+    const linkField = document.getElementById("linkField");
+    const meetingLink = document.getElementById("meetingLink");
+    const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+    const recentList = document.getElementById("recentSchedules");
+    const historyList = document.getElementById("historySchedules");
+    const FIXED_MEETING_LINK = "https://meet.google.com/fixed-meeting";
 
-            const showToast = (message, type = 'success') => {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                
-                if (type === 'success') {
-                    toast.style.backgroundColor = 'var(--success-color)';
-                } else {
-                    toast.style.backgroundColor = 'var(--danger-color)';
-                }
+    const tenantNames = [
+      "Tasdik Rayet", "Sadia Ahmed", "Nahid Islam", "Rafiul Kabir", "Jannat Nahar",
+      "Nusrat Rumi", "Shafin Rahman", "Tanvir Hasan", "Ayesha Siddika", "Arafat Hossain",
+      "Mahi Chowdhury", "Munira Rahman", "Bashir Ahmed"
+    ];
 
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
-            };
+    function renderScheduleHistory() {
+      const history = JSON.parse(localStorage.getItem("sentSchedules")) || [];
+      recentList.innerHTML = "";
+      historyList.innerHTML = "";
 
-            meetingType.addEventListener("change", () => {
-                const type = meetingType.value;
-                if (type === "in-person") {
-                    addressField.classList.remove("hidden");
-                    linkField.classList.add("hidden");
-                } else {
-                    addressField.classList.add("hidden");
-                    linkField.classList.remove("hidden");
-                }
-            });
+      history.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.className = "border rounded-lg p-4 shadow flex flex-col relative bg-gray-50 hover:bg-gray-100 transition";
+        li.innerHTML = `
+          <strong class="text-blue-600">${item.tenant}</strong>
+          <p class="text-sm text-gray-600">${item.date} at ${item.time}</p>
+          <p class="text-gray-800 mt-1">📋 ${item.description}</p>
+          ${item.meetingType === 'online' ? `<p class='text-sm text-blue-500'><a href='${item.link}' target='_blank'>Join Link</a></p>` : ''}
+          <button onclick="deleteSchedule(${index})" class="absolute top-2 right-2 text-red-500 text-sm hover:text-red-700 transition">❌</button>
+        `;
 
-            saveDraftBtn.addEventListener("click", () => {
-                const schedule = getScheduleData();
-                if (!schedule) return;
+        if (index < 3) {
+          recentList.appendChild(li);
+        } else {
+          historyList.appendChild(li);
+        }
+      });
+    }
 
-                let drafts = JSON.parse(localStorage.getItem("scheduleDrafts")) || [];
-                drafts.push(schedule);
-                localStorage.setItem("scheduleDrafts", JSON.stringify(drafts));
-                showToast("Draft saved successfully!");
-                renderDrafts();
-                form.reset();
-            });
+    function deleteSchedule(index) {
+      const history = JSON.parse(localStorage.getItem("sentSchedules")) || [];
+      history.splice(index, 1);
+      localStorage.setItem("sentSchedules", JSON.stringify(history));
+      renderScheduleHistory();
+    }
 
-            sendBtn.addEventListener("click", () => {
-                let drafts = JSON.parse(localStorage.getItem("scheduleDrafts")) || [];
-                if (drafts.length === 0) {
-                    showToast("No drafts to send.", 'error');
-                    return;
-                }
+    tenantNames.forEach(name => {
+      const label = document.createElement("label");
+      label.className = "inline-flex items-center";
+      label.innerHTML = `<input type="checkbox" class="tenantCheckbox mr-2" value="${name}"> ${name}`;
+      checkboxContainer.appendChild(label);
+    });
 
-                // This is a simulation of sending to tenants.
-                // In a real app, this would involve a backend process.
-                console.log("Sending schedules to tenants:", drafts);
+    selectAllCheckbox.addEventListener("change", function () {
+      document.querySelectorAll(".tenantCheckbox").forEach(cb => cb.checked = this.checked);
+    });
 
-                localStorage.removeItem("scheduleDrafts");
-                showToast("Schedules sent to all tenants!");
-                renderDrafts();
-            });
+    meetingType.addEventListener("change", () => {
+      const isOnline = meetingType.value === "online";
+      linkField.classList.toggle("hidden", !isOnline);
+      meetingLink.disabled = !isOnline;
+      meetingLink.value = isOnline ? FIXED_MEETING_LINK : "";
+    });
 
-            function getScheduleData() {
-                const type = meetingType.value;
-                const task = {
-                    id: Date.now(), // Unique ID for the draft
-                    tenant: tenantName.value.trim(),
-                    meetingType: type,
-                    address: type === "in-person" ? propertyAddress.value.trim() : "",
-                    link: type === "online" ? meetingLink.value.trim() : "",
-                    description: description.value.trim(),
-                    date: date.value,
-                    time: time.value
-                };
+    document.getElementById("scheduleForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const selected = Array.from(document.querySelectorAll(".tenantCheckbox:checked")).map(cb => cb.value);
+      const description = document.getElementById("description").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const link = meetingLink.value;
+      const type = meetingType.value;
 
-                if (!task.tenant || !task.description || !task.date || !task.time || (type === "in-person" && !task.address) || (type === "online" && !task.link)) {
-                    showToast("Please fill all required fields.", 'error');
-                    return null;
-                }
-                return task;
-            }
+      if (selected.length === 0) {
+        alert("Please select at least one tenant.");
+        return;
+      }
 
-            function renderDrafts() {
-                draftList.innerHTML = "";
-                const drafts = JSON.parse(localStorage.getItem("scheduleDrafts")) || [];
-                if (drafts.length === 0) {
-                    draftList.innerHTML = `<li>No draft schedules yet.</li>`;
-                    return;
-                }
+      const allSchedules = JSON.parse(localStorage.getItem("sentSchedules")) || [];
 
-                drafts.forEach((d) => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'draft-item';
-                    listItem.innerHTML = `
-                        <strong>${d.tenant}</strong>
-                        <p class="description">${d.description}</p>
-                        <div class="details">
-                            <i class="fas fa-calendar-alt"></i> ${d.date} at ${d.time}
-                            ${d.meetingType === "online" 
-                                ? `| <i class="fas fa-link"></i> <a href="${d.link}" target="_blank">Meeting Link</a>` 
-                                : `| <i class="fas fa-map-marker-alt"></i> ${d.address}`
-                            }
-                        </div>`;
-                    draftList.appendChild(listItem);
-                });
-            }
-
-            renderDrafts();
+      selected.forEach(name => {
+        allSchedules.unshift({
+          tenant: name,
+          meetingType: type,
+          description,
+          date,
+          time,
+          link: type === "online" ? link : ""
         });
-    </script>
+      });
+
+      localStorage.setItem("sentSchedules", JSON.stringify(allSchedules));
+      renderScheduleHistory();
+
+      alert("Schedule sent successfully!");
+      this.reset();
+      linkField.classList.add("hidden");
+      meetingLink.value = "";
+      document.querySelectorAll(".tenantCheckbox").forEach(cb => cb.checked = false);
+      selectAllCheckbox.checked = false;
+    });
+
+    renderScheduleHistory();
+  </script>
 </body>
 </html>

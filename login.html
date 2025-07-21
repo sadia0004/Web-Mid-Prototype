@@ -5,41 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - PropertyPilot</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4); /* dark overlay for contrast */
+      z-index: -1;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">Login</h2>
-    <form id="loginForm" class="space-y-4">
-      <input type="email" id="email" placeholder="Email" class="w-full p-2 border rounded" required />
-      <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded" required />
-      <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Login</button>
-      <p class="text-sm text-center mt-4">
-        Don't have an account? 
-        <a href="signup.html" class="text-indigo-600 hover:underline">Sign Up</a>
-      </p>
-    </form>
-  </div>
+<body class="flex items-center justify-center min-h-screen text-white">
+
+  <!-- 🌄 Video Background -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="/image/Vedio1.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <div class="overlay"></div>
+
+  <!-- 📦 Login Box -->
+<div class="backdrop-blur-md bg-white/10 text-white border border-white/20 p-8 rounded-lg shadow-lg w-full max-w-md z-10">
+  <h2 class="text-2xl font-bold mb-6 text-center text-white">Login</h2>
+  <form id="loginForm" class="space-y-4">
+    <input type="email" id="email" placeholder="Email" class="w-full p-2 bg-white/20 border border-white/30 text-white rounded placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-300" required />
+    <input type="password" id="password" placeholder="Password" class="w-full p-2 bg-white/20 border border-white/30 text-white rounded placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-300" required />
+    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded transition duration-200">Login</button>
+    <p class="text-sm text-center mt-4 text-white">
+      Don't have an account?
+      <a href="signup.html" class="text-indigo-300 hover:underline">Sign Up</a>
+    </p>
+  </form>
+</div>
+
 
   <script>
+    const demoUsers = [
+      {
+        fullName: "Sadia Ahmed",
+        email: "sadi@gmail.com",
+        password: "123",
+        nidNumber: "1234567890",
+        role: "landlord",
+        profilePhoto: "",
+        totalProperties: 5,
+        totalTenants: 10,
+        monthlyIncome: 50000,
+        pendingMaintenance: 2
+      },
+      {
+        fullName: "Tasdik Rayet",
+        email: "rayu@gmail.com",
+        password: "123",
+        nidNumber: "9876543210",
+        role: "tenant",
+        profilePhoto: "",
+        apartmentNo: "B-203",
+        profession: "Software Engineer",
+        rentDate: "2025-08-01",
+        rentDue: 12000,
+        pendingBills: 2,
+        unreadNotifications: 3,
+        openMaintenance: 1
+      }
+    ];
+
+    let existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    demoUsers.forEach(demoUser => {
+      const exists = existingUsers.some(u => u.email === demoUser.email);
+      if (!exists) {
+        existingUsers.push(demoUser);
+      }
+    });
+    localStorage.setItem('users', JSON.stringify(existingUsers));
+
+    const existingUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const urlParams = new URLSearchParams(window.location.search);
+    const force = urlParams.get("force");
+    if (existingUser && force !== "true") {
+      window.location.href = existingUser.role === 'landlord' ? 'landlord_dashboard.html' : 'tenant_dashboard.html';
+    }
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-
       const users = JSON.parse(localStorage.getItem('users')) || [];
       const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
       if (user) {
         localStorage.setItem('loggedInUser', JSON.stringify(user));
-
-        if (user.role === "landlord") {
-          window.location.href = "landlord_dashboard.html"; // Your landlord dashboard page
-        } else if (user.role === "tenant") {
-          window.location.href = "tenant_dashboard.html"; // Tenant dashboard if any
-        } else {
-          alert("Unknown role.");
-        }
+        window.location.href = user.role === "landlord" ? "landlord_dashboard.html" : "tenant_dashboard.html";
       } else {
         alert("Invalid email or password.");
       }

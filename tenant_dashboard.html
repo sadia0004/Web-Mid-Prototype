@@ -8,23 +8,30 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f4ff;
+      background: linear-gradient(-45deg, #dce4fb, #c0c8f7, #b3e6f2, #e1bee7);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       color: #222;
-     
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .navbar {
       display: flex;
       align-items: center;
-      background-color: #2980b9;
+      background-color: #2d0666;
       padding: 12px 25px;
       color: white;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .navbar .brand img {
-      height: 60px;
-      width: 60px;
+      height: 80px;
+      width: 100px;
       border-radius: 50%;
       margin-right: 15px;
       object-fit: cover;
@@ -110,6 +117,11 @@
       border-radius: 15px;
       text-align: center;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
     }
 
     .card .icon {
@@ -137,7 +149,7 @@
 
   <nav class="navbar">
     <div class="brand" tabindex="0">
-      <img id="brandLogo" src="image/logo.png" alt="PropertyPilot Logo" width="30" height="30" />
+      <img id="brandLogo" src="image/logo.png" alt="PropertyPilot Logo"  />
     </div>
     <h1>PropertyPilot</h1>
     <a href="profile.html" class="active">Profile</a>
@@ -183,7 +195,7 @@
 
       <div class="card">
         <div class="icon">🛠️</div>
-        <div class="number" id="openMaintenance">0</div>
+        <div class="number" id="openMaintenance"></div>
         <div class="label">Open Maintenance</div>
       </div>
     </section>
@@ -194,26 +206,19 @@
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
   if (!loggedInUser || loggedInUser.role !== 'tenant') {
-    // Not logged in or not tenant: redirect to login page
     window.location.href = 'login.html';
   } else {
-    // Set profile photo (use fallback if empty)
-    document.getElementById('profilePhoto').src = loggedInUser.profilePhoto && loggedInUser.profilePhoto.length > 0
+    document.getElementById('profilePhoto').src = loggedInUser.profilePhoto?.length > 0
       ? loggedInUser.profilePhoto
       : 'default-avatar.png';
 
-    // Set user full name
-    document.getElementById('userFullName').innerText = loggedInUser.fullName;
-
-    // Personalize welcome message
+    document.getElementById('userFullName').innerText = loggedInUser.fullName || 'Tenant';
     document.getElementById('welcomeMessage').innerText = `👋 Welcome, ${loggedInUser.fullName}`;
 
-    // Set apartment, profession, rent date, rent alert — fallback to "-" if missing
-    document.getElementById('apartmentInfo').innerText = `🏠 Apartment: ${loggedInUser.apartmentNo || '-'}`;
-    document.getElementById('professionInfo').innerText = `🧑‍💼 Profession: ${loggedInUser.profession || '-'}`;
-    document.getElementById('rentDateInfo').innerText = `📅 Rent Date: ${loggedInUser.rentDate || '-'}`;
+    document.getElementById('apartmentInfo').innerText = `🏠 Apartment: ${loggedInUser.apartmentNo || 'B-203'}`;
+    document.getElementById('professionInfo').innerText = `🧑‍💼 Profession: ${loggedInUser.profession || 'Not Provided'}`;
+    document.getElementById('rentDateInfo').innerText = `📅 Rent Date: ${loggedInUser.rentDate || 'Not Set'}`;
 
-    // Calculate days until rent due if rentDate exists
     if (loggedInUser.rentDate) {
       const today = new Date();
       const rentDate = new Date(loggedInUser.rentDate);
@@ -226,14 +231,12 @@
       document.getElementById('rentAlert').innerText = `🔔 Rent due date not set`;
     }
 
-    // Fill dashboard card data, fallback 0 or empty string
     document.getElementById('rentDue').innerText = loggedInUser.rentDue ? `৳${loggedInUser.rentDue}` : '৳0';
     document.getElementById('pendingBills').innerText = loggedInUser.pendingBills || 0;
     document.getElementById('unreadNotifications').innerText = loggedInUser.unreadNotifications || 0;
     document.getElementById('openMaintenance').innerText = loggedInUser.openMaintenance || 0;
   }
 
-  // Logout logic
   document.getElementById('logoutLink').addEventListener('click', e => {
     e.preventDefault();
     localStorage.removeItem('loggedInUser');

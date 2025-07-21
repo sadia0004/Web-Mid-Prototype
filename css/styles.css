@@ -1,4 +1,4 @@
-/* Custom CSS for Rentify */
+/* Custom CSS for PropertyPilot */
 
 /* Custom color variables */
 :root {
@@ -143,7 +143,7 @@ html {
 
 /* Custom gradient backgrounds */
 .gradient-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, #2a0a67 100%);
 }
 
 .gradient-secondary {

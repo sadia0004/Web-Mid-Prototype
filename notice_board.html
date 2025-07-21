@@ -9,7 +9,8 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f3f4f6;
+      background-image: url(image/Receipt.jpg);
+      background-size: cover;
     }
   </style>
 </head>
@@ -27,47 +28,79 @@
     </div>
   </div>
 
-  <script>
-    const tenant = JSON.parse(localStorage.getItem('loggedInUser'));
-    const allSchedules = JSON.parse(localStorage.getItem('sentSchedules')) || [];
+ <script>
+  const tenant = JSON.parse(localStorage.getItem('loggedInUser'));
 
-    const scheduleContainer = document.getElementById('scheduleContainer');
-    const emptyMessage = document.getElementById('emptyMessage');
+  if (!tenant || tenant.role !== 'tenant') {
+    alert("You are not authorized to view this page.");
+    window.location.href = 'login.html';
+  }
 
-    if (!tenant || tenant.role !== 'tenant') {
-      alert("You are not authorized to view this page.");
-      window.location.href = 'login.html';
-    }
+  // Inject dummy schedules if none exist
+  let allSchedules = JSON.parse(localStorage.getItem('sentSchedules')) || [];
 
-    const tenantSchedules = allSchedules.filter(item => item.tenant.toLowerCase() === tenant.fullName.toLowerCase());
+  if (allSchedules.length === 0) {
+    allSchedules = [
+      {
+        tenant: "Tasdik Rayet",
+        description: "Monthly Rent Meeting",
+        date: "2025-07-25",
+        time: "10:00 AM",
+        meetingType: "in-person",
+        address: "123 Green Lane, Uttara, Dhaka"
+      },
+      {
+        tenant: "Tasdik Rayet",
+        description: "Virtual Maintenance Review",
+        date: "2025-07-27",
+        time: "6:00 PM",
+        meetingType: "online",
+        link: "https://zoom.us/j/987654321"
+      },
+      {
+        tenant: "Tasdik Rayet",
+        description: "Tenant Feedback Session",
+        date: "2025-08-01",
+        time: "3:00 PM",
+        meetingType: "in-person",
+        address: "Office Room 2A, PropertyPilot HQ"
+      }
+    ];
+    localStorage.setItem('sentSchedules', JSON.stringify(allSchedules));
+  }
 
-    if (tenantSchedules.length === 0) {
-      emptyMessage.classList.remove('hidden');
-    } else {
-      tenantSchedules.forEach(schedule => {
-        const card = document.createElement('div');
-        card.className = 'bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow';
+  const scheduleContainer = document.getElementById('scheduleContainer');
+  const emptyMessage = document.getElementById('emptyMessage');
 
-        card.innerHTML = `
-          <div class="flex items-start justify-between mb-2">
-            <div>
-              <h3 class="text-2xl font-semibold text-blue-800 mb-1">🗓️ ${schedule.description}</h3>
-              <p class="text-sm text-gray-500">${schedule.date} at ${schedule.time}</p>
-            </div>
-            <div class="text-sm text-white px-3 py-1 rounded-full ${schedule.meetingType === 'in-person' ? 'bg-green-600' : 'bg-indigo-600'}">
-              ${schedule.meetingType === 'in-person' ? 'In-Person' : 'Online'}
-            </div>
+  const tenantSchedules = allSchedules.filter(item => item.tenant.toLowerCase() === tenant.fullName.toLowerCase());
+
+  if (tenantSchedules.length === 0) {
+    emptyMessage.classList.remove('hidden');
+  } else {
+    tenantSchedules.forEach(schedule => {
+      const card = document.createElement('div');
+      card.className = 'bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow';
+
+      card.innerHTML = `
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <h3 class="text-2xl font-semibold text-blue-800 mb-1">🗓️ ${schedule.description}</h3>
+            <p class="text-sm text-gray-500">${schedule.date} at ${schedule.time}</p>
           </div>
-
-          <div class="mt-3 text-gray-700 text-[15px] space-y-1">
-            ${schedule.meetingType === 'in-person'
-              ? `<p><strong>📍 Address:</strong> ${schedule.address}</p>`
-              : `<p><strong>🔗 Meeting Link:</strong> <a href="${schedule.link}" target="_blank" class="text-blue-600 underline">${schedule.link}</a></p>`}
+          <div class="text-sm text-white px-3 py-1 rounded-full ${schedule.meetingType === 'in-person' ? 'bg-green-600' : 'bg-indigo-600'}">
+            ${schedule.meetingType === 'in-person' ? 'In-Person' : 'Online'}
           </div>
-        `;
-        scheduleContainer.appendChild(card);
-      });
-    }
-  </script>
+        </div>
+
+        <div class="mt-3 text-gray-700 text-[15px] space-y-1">
+          ${schedule.meetingType === 'in-person'
+            ? `<p><strong>📍 Address:</strong> ${schedule.address}</p>`
+            : `<p><strong>🔗 Meeting Link:</strong> <a href="${schedule.link}" target="_blank" class="text-blue-600 underline">${schedule.link}</a></p>`}
+        </div>
+      `;
+      scheduleContainer.appendChild(card);
+    });
+  }
+</script>
 </body>
 </html>
