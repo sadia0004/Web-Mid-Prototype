@@ -27,16 +27,16 @@ class PropertyManager {
                     this.properties.push({
                         id: property.id,
                         title: property.title,
-                        price: property.rent.amount, // Convert BDT to display format
+                        price: property.rent.amount, 
                         image: property.images[0],
                         location: `${property.location.subArea}, ${property.location.area}`,
                         bedrooms: property.rooms.bedrooms,
                         bathrooms: property.rooms.bathrooms,
                         sqft: property.size.area,
                         rating: landlord.rating,
-                        featured: property.id % 3 === 0, // Mark every 3rd property as featured
-                        popular: property.id % 5 === 0, // Mark every 5th property as popular
-                        luxury: property.rent.amount > 30000, // Mark expensive properties as luxury
+                        featured: property.id % 3 === 0, 
+                        popular: property.id % 5 === 0, 
+                        luxury: property.rent.amount > 30000, 
                         description: property.description,
                         type: property.type,
                         furnished: property.furnished,

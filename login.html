@@ -19,7 +19,7 @@
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4); /* dark overlay for contrast */
+      background-color: rgba(0, 0, 0, 0.4);
       z-index: -1;
     }
   </style>
@@ -34,21 +34,25 @@
   <div class="overlay"></div>
 
   <!-- 📦 Login Box -->
-<div class="backdrop-blur-md bg-white/10 text-white border border-white/20 p-8 rounded-lg shadow-lg w-full max-w-md z-10">
-  <h2 class="text-2xl font-bold mb-6 text-center text-white">Login</h2>
-  <form id="loginForm" class="space-y-4">
-    <input type="email" id="email" placeholder="Email" class="w-full p-2 bg-white/20 border border-white/30 text-white rounded placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-300" required />
-    <input type="password" id="password" placeholder="Password" class="w-full p-2 bg-white/20 border border-white/30 text-white rounded placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-300" required />
-    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded transition duration-200">Login</button>
-    <p class="text-sm text-center mt-4 text-white">
-      Don't have an account?
-      <a href="signup.html" class="text-indigo-300 hover:underline">Sign Up</a>
-    </p>
-  </form>
-</div>
-
+  <div class="backdrop-blur-md bg-white/10 text-white border border-white/20 p-8 rounded-lg shadow-lg w-full max-w-md z-10">
+    <h2 class="text-2xl font-bold mb-6 text-center text-white">Login</h2>
+    <form id="loginForm" class="space-y-4">
+      <input type="email" id="email" placeholder="Email" class="w-full p-2 bg-white/20 border border-white/30 text-white rounded placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-300" required />
+      <input type="password" id="password" placeholder="Password" class="w-full p-2 bg-white/20 border border-white/30 text-white rounded placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-300" required />
+      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded transition duration-200">Login</button>
+      <p class="text-sm text-center mt-4 text-white">
+        Don't have an account?
+        <a href="signup.html" class="text-indigo-300 hover:underline">Sign Up</a>
+      </p>
+    </form>
+  </div>
 
   <script>
+    // 🌐 Get query param
+    const urlParams = new URLSearchParams(window.location.search);
+    const isDemo = urlParams.get("demo");
+
+    // 🧍‍♂️ Demo Users
     const demoUsers = [
       {
         fullName: "Sadia Ahmed",
@@ -79,27 +83,32 @@
       }
     ];
 
+    // 🗂 Load demo users if not present
     let existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-    demoUsers.forEach(demoUser => {
-      const exists = existingUsers.some(u => u.email === demoUser.email);
-      if (!exists) {
-        existingUsers.push(demoUser);
-      }
-    });
-    localStorage.setItem('users', JSON.stringify(existingUsers));
+    if (isDemo || existingUsers.length === 0) {
+      demoUsers.forEach(demoUser => {
+        const exists = existingUsers.some(u => u.email === demoUser.email);
+        if (!exists) {
+          existingUsers.push(demoUser);
+        }
+      });
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+    }
 
+    // 👤 Already logged in?
     const existingUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    const urlParams = new URLSearchParams(window.location.search);
     const force = urlParams.get("force");
     if (existingUser && force !== "true") {
       window.location.href = existingUser.role === 'landlord' ? 'landlord_dashboard.html' : 'tenant_dashboard.html';
     }
 
+    // 🔐 Handle login
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const users = JSON.parse(localStorage.getItem('users')) || [];
+
       const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
       if (user) {

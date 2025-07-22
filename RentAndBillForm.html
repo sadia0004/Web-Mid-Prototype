@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #006A4E; /* Bangladesh Green */
-            --secondary-color: #4A90E2; /* Professional Blue */
+            --primary-color: #006A4E; 
+            --secondary-color: #4A90E2; 
             --success-color: #28a745;
             --background-color: #f0f2f5;
             --card-background: #ffffff;
@@ -323,23 +323,23 @@
             const tenantName = tenantNameInput.value;
             const totalAmountText = document.getElementById('total-amount').textContent;
             
-            // A simple validation to check if a calculation has been made.
+           
             if (!tenantName.trim() || totalAmountText === '৳0.00') {
                 // If the tenant name is missing, highlight the input field
                 if (!tenantName.trim()) {
                     tenantNameInput.style.borderColor = 'red';
-                    // Set a timeout to remove the red border after 2 seconds
+                
                     setTimeout(() => {
                         tenantNameInput.style.borderColor = 'var(--border-color)';
                     }, 2000);
                 }
-                return; // Stop the function
+                return; 
             }
 
             const toast = document.getElementById('success-toast');
             toast.classList.add('show');
 
-            // Hide the toast after 3 seconds
+           
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
